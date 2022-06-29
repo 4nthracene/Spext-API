@@ -1,0 +1,112 @@
+{
+	"swagger": "2.0",
+	"paths": {
+		"/files/upload": {
+			"post": {
+				"tags": ["Files"],
+				"description": "Upload a new media file.",
+				"consumes": "multipart/form-data",
+				"parameters": [
+					{
+						"name": "file",
+						"description": "File to save",
+						"type": "file",
+						"required": true,
+						"in": "formData"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"properties": {
+								"message": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+
+			}
+		},
+		"/files/info": {
+			"get": {
+				"tags": ["Files"],
+				"description": "Get info about the media using it's ID",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "ID Of the file to get info about",
+						"parameterType": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"properties": {
+								"duration": {
+									"type": "number"
+								},
+								"format": {
+									"type": "string"
+								},
+								"size": {
+									"type": "number"
+								},
+								"encoding": {
+									"type": "string"
+								},
+								"originalName": {
+									"type": "string"
+								},
+								"likes": {
+									"type": "number"
+								},
+								"comments": {
+									"type": "array",
+									"items": { "type": "string" }
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/files/stream": {
+			"get": {
+				"tags": ["Files"],
+				"description": "Streams media of choice",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "ID Of the file to stream",
+						"parameterType": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"audio/*": {
+								"schema": {
+									"type": "string",
+									"format": "binary"
+								}
+							},
+							"video/*": {
+								"schema": {
+									"type": "string",
+									"format": "binary"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

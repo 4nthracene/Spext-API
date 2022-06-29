@@ -25,7 +25,7 @@ async function Run() {
 	app.use(helmet());
 	app.use(logger);
 	app.use(compression());
-	app.use('/docs', SwaggerUI.serve, SwaggerUI.setup(spec, { explorer: true }));
+	app.use('/docs', SwaggerUI.serve, SwaggerUI.setup(require("./swagger.json"), { explorer: true }));
 	app.use(Routes);
 	app.listen(CONFIGURATIONS.PORT, () => {
 		console.log(

@@ -17,5 +17,3 @@ const options = {
   apis: [path.resolve(__dirname, "../Routes/Files.js")],
 };
 
-const spec = swaggerJsDoc(options);
-module.exports = spec
