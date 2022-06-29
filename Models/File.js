@@ -10,6 +10,10 @@ const FileSchema = new mongoose.Schema(
 			type: Number,
 			default: 0
 		},
+		views: {
+			type: Number,
+			default: 0
+		},
 		comments: [
 			{
 				type: String
@@ -42,6 +46,7 @@ const FileSchema = new mongoose.Schema(
 			}
 		}
 	},
+	
 	{ timeStamps: { createdAt: true } }
 );
 

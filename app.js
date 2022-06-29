@@ -1,4 +1,6 @@
 const express = require("express");
+const spec = require("./Configurations/swagger.config");
+const SwaggerUI = require("swagger-ui-express");
 const cors = require("cors");
 const helmet = require("helmet");
 const CONFIGURATIONS = require("./Configurations");
@@ -21,8 +23,9 @@ async function Run() {
 	app.use(express.static(__dirname));
 	app.use(cors());
 	app.use(helmet());
-	app.use(logger)
+	app.use(logger);
 	app.use(compression());
+	app.use('/docs', SwaggerUI.serve, SwaggerUI.setup(spec, { explorer: true }));
 	app.use(Routes);
 	app.listen(CONFIGURATIONS.PORT, () => {
 		console.log(
@@ -33,3 +36,4 @@ async function Run() {
 }
 
 Run();
+
