@@ -1,4 +1,6 @@
 const express = require("express");
+const https = require("https");
+const fs = require("fs");
 const spec = require("./Configurations/swagger.config");
 const SwaggerUI = require("swagger-ui-express");
 const cors = require("cors");
@@ -27,7 +29,9 @@ async function Run() {
 	app.use(compression());
 	app.use('/docs', SwaggerUI.serve, SwaggerUI.setup(require("./swagger.json"), { explorer: true }));
 	app.use(Routes);
-	app.listen(CONFIGURATIONS.PORT, () => {
+	const privateKey = fs.readFileSync("server.key");
+	const certificate = fs.readFileSync("server.cert");
+	https.createServer({key: privateKey, cert: certificate}, app).listen(CONFIGURATIONS.PORT, () => {
 		console.log(
 			`[SERVER]: Server up and running on port: ${CONFIGURATIONS.PORT}`
 		);
