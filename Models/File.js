@@ -12,7 +12,9 @@ const FileSchema = new mongoose.Schema(
 		},
 		views: {
 			type: Number,
-			default: 0
+			default: 0,
+			index: true
+
 		},
 		comments: [
 			{
@@ -26,7 +28,8 @@ const FileSchema = new mongoose.Schema(
 			},
 			format: {
 				type: String,
-				required: true
+				required: true,
+				index: true
 			},
 			size: {
 				type: Number,
@@ -37,10 +40,6 @@ const FileSchema = new mongoose.Schema(
 				required: true
 			},
 			originalname: {
-				type: String,
-				required: true
-			},
-			encoding: {
 				type: String,
 				required: true
 			}

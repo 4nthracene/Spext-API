@@ -1,8 +1,9 @@
 const fs = require("fs");
+const Analytics = require("../Models/Analytics");
 const MULTER_UPLOAD_CONF = require("../Configurations/multer.config");
 const File = require("../Models/File");
 const path = require("path");
-const getInfo = require("../Helpers/GetDuration");
+const getInfo = require("../Helpers/GetInfo");
 
 const upload = async (req, res, next) => {
 	MULTER_UPLOAD_CONF(req, res, async (err) => {
@@ -13,7 +14,27 @@ const upload = async (req, res, next) => {
 			});
 		}
 		const info = await getInfo(req);
-		console.log(req.file);
+		try{
+			const analyticsQueryResult = await Analytics.find({ format: info.fileType })
+			if(analyticsQueryResult.length > 0) {
+				analyticsQueryResult[0].NumberOfFiles += 1;
+				analyticsQueryResult[0].durations.push(info.duration);
+				console.log("analyticsQueryResult", analyticsQueryResult);
+				await analyticsQueryResult[0].save()
+			} else {
+				const newAnalytics = new Analytics({
+					format: info.fileType,
+					averageDuration: info.duration,
+					durations: [info.duration],
+					NumberOfFiles: 1,
+				});
+				console.log("newAnalytics", newAnalytics)
+				await newAnalytics.save()
+			}
+			
+		} catch(e) {
+
+		}
 		const newFile = new File({
 			fileName: req.file.path,
 			info: {
@@ -58,6 +79,9 @@ const info = async (req, res, next) => {
 const stream = async (req, res, next) => {
 	try {
 		const file = await File.findById(req.query.id);
+		const analytics = await Analytics.find({format: file.info.format});
+		analytics[0].averageViews += 1;
+		await analytics.save();
 		file.views += 1;
 		await file.save()
 		res.setHeader("Content-Type", file.info.format);

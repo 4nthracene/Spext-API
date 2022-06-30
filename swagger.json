@@ -107,6 +107,134 @@
 					}
 				}
 			}
+		},
+		"/files/like": {
+			"post": {
+				"tags": ["Files"],
+				"description": "Like the video given it's ID",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "body",
+						"description": "ID of the video you want to like",
+						"parameterType": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"properties": {
+								"likes": {
+									"type": "number"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/files/comment": {
+			"post": {
+				"tags": ["Files"],
+				"description": "comment on the video given it's ID and the comment",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "body",
+						"description": "ID of the video you want to like",
+						"parameterType": "string"
+					},
+					{
+						"name": "comment",
+						"in": "body",
+						"description": "Comment which should be added on the video of that ID",
+						"parameterType": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"properties": {
+								"comments": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/analytics/info": {
+			"get": {
+				"tags": ["Analytics"],
+				"description": "Get information provided it's fileType",
+				"parameters": [
+					{
+						"name": "type",
+						"in": "query",
+						"description": "the file type you want to get information about",
+						"parameterType": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"properties": {
+								"_id": {
+									"type": "string"
+								},
+								"averageViews": {
+									"type": "integer"
+								},
+								"durations": {
+									"type": "array",
+									"items": {
+										"type": "integer"
+									}
+								},
+								"format": {
+									"type": "string"
+								},
+								"NumberOfFiles": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/analytics/averageDuration": {
+			"get": {
+				"tags": ["Analytics"],
+				"description": "Get average duration provided it's fileType",
+				"parameters": [
+					{
+						"name": "type",
+						"in": "query",
+						"description": "the file type you want to get the average duration of",
+						"parameterType": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"properties": {
+								"averageDuration": {
+									"type": "integer"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
