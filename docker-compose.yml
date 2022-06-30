@@ -1,0 +1,27 @@
+version: "3.6"
+
+services:
+
+  # Backend API
+  api1:
+    container_name: backend1
+    build: ./
+    working_dir: /usr/src/spext-backend
+    command: npm run dev
+    env_file: 
+      - .env
+    ports:
+      - "80:${PORT}"
+    volumes:
+      - ./:/usr/src/spext-backend
+    links:
+      - mongo
+        #
+  # Mongo DB
+  mongo:
+    image: mongo
+    env_file: 
+      - .env
+    ports:
+      - "${MONGOPORT}"
+
