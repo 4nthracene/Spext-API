@@ -12,5 +12,7 @@ router.post("/like", FileController.like);
 
 router.post("/comment", FileController.comment);
 
+router.post("/transcode", FileController.transcode);
+
 module.exports = router;
 
