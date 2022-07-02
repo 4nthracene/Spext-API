@@ -76,7 +76,7 @@ const stream = async (req, res, next) => {
 		const file = await File.findById(req.query.id);
 		const analytics = await Analytics.find({ format: file.info.format });
 		analytics[0].averageViews += 1;
-		await analytics.save();
+		await analytics[0].save();
 		file.views += 1;
 		await file.save();
 		res.setHeader("Content-Type", file.info.format);
