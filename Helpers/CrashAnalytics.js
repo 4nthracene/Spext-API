@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = async () => {
 	process.on("uncaughtException", (err) => {
-		console.log('AN ERROR OCCURED');
+		console.log(err);
 		const d = new Date();
 		const content = `\n[${d}]: ${err.message}`;
 		try {
