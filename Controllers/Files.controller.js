@@ -9,10 +9,7 @@ const getInfo = require("../Helpers/GetInfo");
 const upload = async (req, res, next) => {
 	MULTER_UPLOAD_CONF(req, res, async (err) => {
 		if (err) {
-			console.error(err);
-			return res.status(400).json({
-				message: `An error occured while saving the file.`,
-			});
+			next(err);
 		}
 		const info = await getInfo(req);
 		try {
@@ -34,7 +31,9 @@ const upload = async (req, res, next) => {
 				console.log("newAnalytics", newAnalytics);
 				await newAnalytics.save();
 			}
-		} catch (e) {}
+		} catch (e) {
+			next(e);
+		}
 		const newFile = new File({
 			fileName: req.file.path,
 			info: {
@@ -51,10 +50,7 @@ const upload = async (req, res, next) => {
 				message: "File saved successfully.",
 			});
 		} catch (e) {
-			console.log(`[SERVER]: Error while saving the file, ${e.message}`);
-			res.json({
-				message: `An error occured while saving the file.`,
-			});
+			next(e);
 		}
 	});
 };
@@ -70,9 +66,7 @@ const info = async (req, res, next) => {
 			comments: doc.comments,
 		});
 	} catch (e) {
-		return res.status(404).json({
-			message: `No file with that ID exists`,
-		});
+		next(e);
 	}
 };
 
@@ -87,10 +81,7 @@ const stream = async (req, res, next) => {
 		res.setHeader("Content-Type", file.info.format);
 		fs.createReadStream(file.fileName).pipe(res);
 	} catch (e) {
-		console.log(e.message);
-		return res.status(404).json({
-			message: `Can't find that media.`,
-		});
+		next(e);
 	}
 };
 
@@ -105,12 +96,7 @@ const like = async (req, res, next) => {
 			likes: file.likes,
 		});
 	} catch (e) {
-		console.error(e.message);
-		throw new Error(e);
-		return res.status(400).json({
-			message:
-				"An error occured while liking the video, Please try again.",
-		});
+		next(e);
 	}
 };
 
@@ -123,23 +109,16 @@ const comment = async (req, res, next) => {
 			comments: file.comments,
 		});
 	} catch (e) {
-		console.error(e.message);
-		throw new Error(e);
-		return res.status(400).json({
-			message:
-				"An error occured while commenting on the video, Please try again.",
-		});
+		next(e);
 	}
 };
 
 const transcode = async (req, res, next) => {
 	MULTER_UPLOAD_CONF(req, res, async (err) => {
 		if (err) {
-			console.error(err);
-			return res.status(400).json({
-				message: `An error occured while saving the file.`,
-			});
+			next(err);
 		}
+		try{
 		const info = await getInfo(req);
 		const output = Date.now() + "output." + req.body.format;
 		const convertedOutput = `${path.resolve(
@@ -168,6 +147,10 @@ const transcode = async (req, res, next) => {
 				})
 			})
 			.saveToFile(convertedOutput);
+
+		} catch(e) {
+			return next(e);
+		}
 	});
 };
 
