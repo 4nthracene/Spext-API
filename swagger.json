@@ -177,16 +177,23 @@
 				"description": "comment on the video given it's ID and the comment",
 				"parameters": [
 					{
-						"name": "id",
+						"name": "body",
 						"in": "body",
 						"description": "ID of the video you want to like",
-						"parameterType": "string"
-					},
-					{
-						"name": "comment",
-						"in": "body",
-						"description": "Comment which should be added on the video of that ID",
-						"parameterType": "string"
+						"parameterType": "application/json",
+						"schema": {
+							"properties": {
+								"id": {
+									"type": "string",
+									"required": true
+								},
+								"comment": {
+									"type": "string",
+									"required": true
+								}
+								
+							}
+						}
 					}
 				],
 				"responses": {

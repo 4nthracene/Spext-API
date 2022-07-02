@@ -21,6 +21,10 @@ const AverageDuration = async (req, res, next) => {
 			averageDuration: sum
 		})
 	} catch(e) {
+		console.log(e.message);
+		res.json({
+			error: `No such file type exists in our system.`
+		})
 		next(e);
 	}
 }
