@@ -47,6 +47,7 @@ const upload = async (req, res, next) => {
 		try {
 			await newFile.save();
 			res.json({
+				id: newFile._id,
 				message: "File saved successfully.",
 			});
 		} catch (e) {
