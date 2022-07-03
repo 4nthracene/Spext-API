@@ -1,6 +1,5 @@
 const express = require("express");
 const https = require("https");
-const ERROR_HANDELER = require("./Helpers/Error.handler");
 const fs = require("fs");
 const spec = require("./Configurations/swagger.config");
 const SwaggerUI = require("swagger-ui-express");
@@ -30,7 +29,6 @@ async function Run() {
 	app.use(compression());
 	app.use('/docs', SwaggerUI.serve, SwaggerUI.setup(require("./swagger.json"), { explorer: true }));
 	app.use(Routes);
-	app.use(ERROR_HANDELER);
 	const privateKey = fs.readFileSync("server.key");
 	const certificate = fs.readFileSync("server.cert");
 	https.createServer({key: privateKey, cert: certificate}, app).listen(CONFIGURATIONS.PORT, () => {

@@ -143,7 +143,6 @@ const transcode = async (req, res, next) => {
 				console.log("Processing: " + progress.percent + "% done");
 			})
 			.on("error", (err) => {
-				
 				return next(err);
 			})
 			.saveToFile(convertedOutput);
